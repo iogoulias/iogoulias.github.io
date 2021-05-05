@@ -13,16 +13,16 @@
 //audio.appendChild(source);
 function play() {
 var input = document.getElementById('input').value;
-var audio = document.getElementById('audio');
-var source = document.createElement('source');
+var audio = document.getElementById('source');
+//var source = document.createElement('source');
 source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+input);
-audio.appendChild(source);
+//audio.appendChild(source);
 }
     </script>
   <h1>test</h1>
   <input id="input"></input>
   <button onclick="play()">Play</button>
   <audio controls autoplay id="audio">
- 
+ <source id="source"></source>
 </audio>
   </body></html>
