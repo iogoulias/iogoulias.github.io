@@ -1,5 +1,20 @@
-<html><head></head><body><h1>test</h1>
-  <audio controls autoplay>
-  <source src="https://docs.google.com/uc?export=download&id=1zK7hzRcu67jIMSX7FrUZhjDtMAOV30e8">
+<html><head>
+  
+  </head><body>
+     <script type="text/javascript">
+      var url_string = window.location.href
+      var url = new URL(url_string);
+      var song = url.searchParams.get("song");
+      var audio = document.getElementById('audio');
+var source = document.createElement('source');
+
+source.setAttribute('src', song);
+
+audio.appendChild(source);
+    </script>
+  <h1>test</h1>
+
+  <audio controls autoplay id="audio">
+ 
 </audio>
   </body></html>
