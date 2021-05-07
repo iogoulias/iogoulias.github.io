@@ -11,6 +11,34 @@
 //source.setAttribute('src', song);
 
 //audio.appendChild(source);
+function searchAirtable(searchTerm) {
+  fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9&filterByFormula="+encodeURIComponent('OR(SEARCH("'+searchTerm+'",{Track Name})>0,SEARCH("'+searchTerm+'",Artist)>0,SEARCH("'+searchTerm+'",Album)>0)'))
+    .then((res) => res.json())
+    .then((data) => {
+      //setRecipes(data.records);
+      console.log(data);
+     var ul=[];
+      for (var i=0;i<data.records.length;i++) {
+       var lientry="<li>"
+      for (var key in data.records[i]["fields"]) {
+      lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
+      }
+        lientry=lientry+"<audio><source src= \"https://docs.google.com/uc?export=download&id="+data.records[i]["fields"]["File ID"]+"\"></source></audio>"+"</li>";
+        ul.push(lientry);
+      }
+    
+    var audio = document.getElementById('container');
+    audio.innerHTML="<ul>"+ul.join("")+"</ul>";
+    document.getElementById("audio").load()
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+function search() {
+var input = document.getElementById('input').value;
+searchAirtable(input);
+}
 function play() {
   try {
 var oldsource = document.getElementById('source').remove();
@@ -26,7 +54,6 @@ document.getElementById("audio").load()
     </script>
   <h1>test</h1>
   <input id="input"></input>
-  <button onclick="play()">Play</button>
-  <audio controls autoplay id="audio">
-</audio>
+  <button onclick="search()">Search</button>
+  <div id="container"></div>
   </body></html>
