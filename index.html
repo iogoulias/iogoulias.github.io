@@ -23,7 +23,7 @@ function searchAirtable(searchTerm) {
       for (var key in data.records[i]["fields"]) {
       lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
       }
-        lientry=lientry+"<audio><source src= \"https://docs.google.com/uc?export=download&id="+data.records[i]["fields"]["File ID"]+"\"></source></audio>"+"</li>";
+        lientry=lientry+"<button onclick='play(\""+data.records[i]["fields"]["File ID"]+"\")'>Play</button>"+"</li>";
         ul.push(lientry);
       }
     
@@ -39,14 +39,13 @@ function search() {
 var input = document.getElementById('input').value;
 searchAirtable(input);
 }
-function play() {
+function play(id) {
   try {
 var oldsource = document.getElementById('source').remove();
   } catch (e) {}
-var input = document.getElementById('input').value;
 var audio = document.getElementById('audio');
 var source = document.createElement('source');
-source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+input);
+source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+id);
 source.setAttribute('id', "source");
 audio.appendChild(source);
 document.getElementById("audio").load()
@@ -55,5 +54,6 @@ document.getElementById("audio").load()
   <h1>test</h1>
   <input id="input"></input>
   <button onclick="search()">Search</button>
+  <audio id="audio"><source id="source"></source></audio>
   <div id="container"></div>
   </body></html>
