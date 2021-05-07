@@ -23,7 +23,7 @@ function searchAirtable(searchTerm) {
       for (var key in data.records[i]["fields"]) {
       lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
       }
-        lientry=lientry+"<button onclick='play(\""+data.records[i]["fields"]["File ID"]+"\")'>Play</button>"+"</li>";
+        lientry=lientry+"<button onclick='play('"+data.records[i]["fields"]["File ID"]+"')'>Play</button>"+"</li>";
         ul.push(lientry);
       }
     
