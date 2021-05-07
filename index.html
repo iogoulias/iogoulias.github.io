@@ -12,7 +12,7 @@
 
 //audio.appendChild(source);
 function searchAirtable(searchTerm) {
-  fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9&filterByFormula="+encodeURIComponent('OR(SEARCH("'+searchTerm+'",{Track Name})>0,SEARCH("'+searchTerm+'",Artist)>0,SEARCH("'+searchTerm+'",Album)>0)'))
+  fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9&filterByFormula="+encodeURIComponent('OR(SEARCH("'+searchTerm+'",{Track Name})>0,SEARCH("'+searchTerm+'",Artist)>0,SEARCH("'+searchTerm+'",{File Name})>0,SEARCH("'+searchTerm+'",Album)>0)'))
     .then((res) => res.json())
     .then((data) => {
       //setRecipes(data.records);
