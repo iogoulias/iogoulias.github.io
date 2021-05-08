@@ -1,6 +1,152 @@
-<html><head>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>🎧 Airwaves</title>
+
+  <script type="module">
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+  </script>
+
+  <!-- <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/print.css" media="print"> -->
+
+  <meta name="description" content="MP3 Player for Google Drive">
+  <meta property="og:title" content="🎧 Airwaves">
+  <meta property="og:description" content="MP3 Player for Google Drive">
+  <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+  <meta property="og:image:alt" content="Image description"> -->
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- <meta property="og:url" content="https://www.mywebsite.com/page">
+  <link rel="canonical" href="https://www.mywebsite.com/page"> -->
+
+  <!-- <link rel="icon" href="/favicon.ico">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/my.webmanifest"> -->
+  <meta name="theme-color" content="#E52E4D">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
+
+  <style>
+
+    * {
+      margin: 0; padding: 0;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      min-width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x:  hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      width: 80%;
+      min-width: 320px;
+      max-width: 520px;
+    }
+
+    audio {
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    #results,
+    #results ul,
+    #results ul dl {
+      width: 100%;
+    }
+
+    #results ul {
+      /* max-height: 80vh;
+      overflow-x: hidden;
+      overflow-y: auto; */
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    ul > li {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      justify-content: space-between;;
+      padding: .5rem;
+      line-height: 1.45;
+    }
+
+    ul > li:nth-child(odd) {
+      background: rgba(0,0,0,.02);
+    }
+
+    ul dl {
+      flex-grow: 1;
+      padding: 1rem;
+      /* max-width: 200px; */
+      overflow: hidden;
+    }
+
+    dl li {
+
+    }
+
+    .title {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    .album {
+      font-size: .8em;
+      opacity :.7;
+    }
+
+    ul button {
+      padding: 1rem 2rem;
+    }
+
+    #form {
+      display: flex;
+      width: 100%;
+      gap: 1rem;
+    }
+
+    #form > * {
+      height: 3rem;
+      padding: 0 1rem;
+    }
+
+    input[type="search"] {
+      flex-grow: 1;
+    }
+
+
+  </style>
+</head>
   
-  </head><body>
+  
+<body>
      <script type="text/javascript">
 //      var url_string = location.href
 //      var url = new URL(url_string);
@@ -19,15 +165,18 @@ function searchAirtable(searchTerm) {
       console.log(data);
      var ul=[];
       for (var i=0;i<data.records.length;i++) {
-       var lientry="<li>"
-      for (var key in data.records[i]["fields"]) {
-      lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
-      }
-        lientry=lientry+"<button onclick=\"play('"+data.records[i]["fields"]["File ID"]+"')\">Play</button>"+"</li>";
+       var lientry="<li><dl>"
+      // for (var key in data.records[i]["fields"]) {
+      // lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
+      // }
+        lientry=lientry+"<li class='title'>"+data.records[i]["fields"]["Title"]+"</li>";
+        lientry=lientry+"<li class='album'>"+data.records[i]["fields"]["Album"]+"</li>";
+
+        lientry=lientry+"</dl><button onclick=\"play('"+data.records[i]["fields"]["File ID"]+"')\">Play</button>"+"</li>";
         ul.push(lientry);
       }
     
-    var audio = document.getElementById('container');
+    var audio = document.getElementById('results');
     audio.innerHTML="<ul>"+ul.join("")+"</ul>";
     
     })
@@ -35,7 +184,8 @@ function searchAirtable(searchTerm) {
       console.log(error);
     });
 }
-function search() {
+function search(event) {
+  event.preventDefault();
 var input = document.getElementById('input').value;
 searchAirtable(input);
 }
@@ -48,13 +198,35 @@ var source = document.createElement('source');
 source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+id);
 source.setAttribute('id', "source");
 audio.appendChild(source);
-document.getElementById("audio").load()
+document.getElementById("audio").load();
+document.getElementById("audio").play();
 }
-    </script>
-  <h1>test</h1>
-  <audio id="audio" controls><source src="https://docs.google.com/uc?export=download&amp;id=1kVzNfbHfhSjwRHbEckQjclfzHFqcuL7G" id="source"></audio>
-  <input id="input"></input>
-  <button onclick="search()">Search</button>
 
-  <div id="container"></div>
-  </body></html>
+window.onload = function() {
+  document.getElementById("input").focus();
+};
+
+var form = document.getElementById("form");
+
+function handleForm(event) { 
+  event.preventDefault();
+  search();
+}
+
+    </script>
+
+    <div class="container">
+    
+  <audio id="audio" controls><source src="https://docs.google.com/uc?export=download&amp;id=1kVzNfbHfhSjwRHbEckQjclfzHFqcuL7G" id="source"></audio>
+  
+  <form id="form" onsubmit="search(event)">
+    <input id="input" type="search"></input>
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="results"></div>
+
+</div>
+  </body>
+  
+</html>
