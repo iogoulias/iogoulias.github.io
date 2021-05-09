@@ -36,9 +36,53 @@
 
   <style>
 
-    * {
-      margin: 0; padding: 0;
-    }
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
 
     body {
       font-family: 'Space Mono', monospace;
@@ -64,9 +108,6 @@
 
     audio {
       width: 100%;
-      position: sticky;
-      top: 0;
-      z-index: 1;
     }
 
     #results,
@@ -137,8 +178,21 @@
       padding: 0 1rem;
     }
 
+    input, button, audio {
+      font-family: inherit;
+    }
+
     input[type="search"] {
       flex-grow: 1;
+    }
+
+    .player {
+      width: 100%;
+      position: sticky;
+      padding: .5rem;
+      background: white;
+      top: 0;
+      z-index: 1;
     }
 
 
@@ -147,78 +201,17 @@
   
   
 <body>
-     <script type="text/javascript">
-//      var url_string = location.href
-//      var url = new URL(url_string);
-//      var song = url.searchParams.get("song");
- //     var audio = document.getElementById('audio');
-//var source = document.createElement('source');
-
-//source.setAttribute('src', song);
-
-//audio.appendChild(source);
-function searchAirtable(searchTerm) {
-    fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9&filterByFormula="+encodeURIComponent('OR(SEARCH(LOWER("'+searchTerm+'"),LOWER({Track Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Artist))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER({File Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Album))>0)'))
-    .then((res) => res.json())
-    .then((data) => {
-      //setRecipes(data.records);
-      console.log(data);
-     var ul=[];
-      for (var i=0;i<data.records.length;i++) {
-       var lientry="<li><dl>"
-      // for (var key in data.records[i]["fields"]) {
-      // lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
-      // }
-        lientry=lientry+"<li class='title'>"+data.records[i]["fields"]["Title"]+"</li>";
-        lientry=lientry+"<li class='album'>"+data.records[i]["fields"]["Album"]+"</li>";
-
-        lientry=lientry+"</dl><button onclick=\"play('"+data.records[i]["fields"]["File ID"]+"')\">Play</button>"+"</li>";
-        ul.push(lientry);
-      }
-    
-    var audio = document.getElementById('results');
-    audio.innerHTML="<ul>"+ul.join("")+"</ul>";
-    
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-function search(event) {
-  event.preventDefault();
-var input = document.getElementById('input').value;
-searchAirtable(input);
-}
-function play(id) {
-  try {
-var oldsource = document.getElementById('source').remove();
-  } catch (e) {}
-var audio = document.getElementById('audio');
-var source = document.createElement('source');
-source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+id);
-source.setAttribute('id', "source");
-audio.appendChild(source);
-document.getElementById("audio").load();
-document.getElementById("audio").play();
-}
-
-window.onload = function() {
-  document.getElementById("input").focus();
-};
-
-var form = document.getElementById("form");
-
-function handleForm(event) { 
-  event.preventDefault();
-  search();
-}
-
-    </script>
-
+     
     <div class="container">
     
-  <audio id="audio" controls><source src="https://docs.google.com/uc?export=download&amp;id=1kVzNfbHfhSjwRHbEckQjclfzHFqcuL7G" id="source"></audio>
-  
+  <figure class="player">
+    <figcaption></figcaption>
+    <audio id="audio" controls><source src="https://docs.google.com/uc?export=download&amp;id=1kVzNfbHfhSjwRHbEckQjclfzHFqcuL7G" id="source"></audio>
+    <div>
+      <button type="button" class="skipForward" onclick="audioForward()">+15</button>
+      <button type="button" class="skipBackward" onclick="audioBackward()">-15</button>
+    </div>
+  </figure>
   <form id="form" onsubmit="search(event)">
     <input id="input" type="search"></input>
     <button type="submit">Search</button>
@@ -226,7 +219,156 @@ function handleForm(event) {
 
   <div id="results"></div>
 
+  <h3>
+
+  </h3>
+  <ul>
+    <li></li>
+  </ul>
+
 </div>
-  </body>
+
+<script type="text/javascript">
+  //      var url_string = location.href
+  //      var url = new URL(url_string);
+  //      var song = url.searchParams.get("song");
+   //     var audio = document.getElementById('audio');
+  //var source = document.createElement('source');
+  
+  //source.setAttribute('src', song);
+  
+  //audio.appendChild(source);
+
+  var audio = document.getElementById('audio');
+  var source = document.createElement('source');
+
+  function searchAirtable(searchTerm) {
+      fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9&filterByFormula="+encodeURIComponent('OR(SEARCH(LOWER("'+searchTerm+'"),LOWER({Track Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Artist))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER({File Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Album))>0)'))
+      .then((res) => res.json())
+      .then((data) => {
+        //setRecipes(data.records);
+        console.log(data);
+       var ul=[];
+        for (var i=0;i<data.records.length;i++) {
+         var lientry="<li><dl>"
+        // for (var key in data.records[i]["fields"]) {
+        // lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
+        // }
+          lientry=lientry+"<li class='title'>"+data.records[i]["fields"]["Title"]+"</li>";
+          lientry=lientry+"<li class='album'>"+data.records[i]["fields"]["Album"]+"</li>";
+  
+          lientry=lientry+"</dl><button onclick=\"play('"+data.records[i]["fields"]["File ID"]+"')\">Play</button>"+"</li>";
+          ul.push(lientry);
+        }
+      
+      var audio = document.getElementById('results');
+      audio.innerHTML="<ul>"+ul.join("")+"</ul>";
+      
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function search(event) {
+    event.preventDefault();
+    var input = document.getElementById('input').value;
+    searchAirtable(input);
+  }
+
+  function play(id) {
+    try {
+      var oldsource = document.getElementById('source').remove();
+    } catch (e) {}
+    
+
+    source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+id);
+    source.setAttribute('id', "source");
+    audio.appendChild(source);
+
+    document.getElementById("audio").load();
+    document.getElementById("audio").play();
+  } 
+  
+  window.onload = function() {
+    document.getElementById("input").focus();
+  };
+  
+  var form = document.getElementById("form");
+  
+  function handleForm(event) { 
+    event.preventDefault();
+    search();
+  }
+  
+audio.onended = (event) => {
+  console.log('Video stopped either because 1) it was over, ' +
+      'or 2) no further data is available.');
+
+    fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9")
+      .then((res) => res.json())
+      .then((data) => {
+        //setRecipes(data.records);
+        console.log(data.records.length);
+      //  var ul=[];
+      //   for (var i=0;i<data.records.length;i++) {
+      //    var lientry="<li><dl>"
+      //   // for (var key in data.records[i]["fields"]) {
+      //   // lientry=lientry+" <b>"+key+"</b>: "+data.records[i]["fields"][key];
+      //   // }
+      //     lientry=lientry+"<li class='title'>"+data.records[i]["fields"]["Title"]+"</li>";
+      //     lientry=lientry+"<li class='album'>"+data.records[i]["fields"]["Album"]+"</li>";
+  
+      //     lientry=lientry+"</dl><button onclick=\"play('"+data.records[i]["fields"]["File ID"]+"')\">Play</button>"+"</li>";
+      //     ul.push(lientry);
+      //   }
+      
+      // var audio = document.getElementById('results');
+      // audio.innerHTML="<ul>"+ul.join("")+"</ul>";
+      
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  // count all records
+  // generate random number between 1 and $count
+  // play(fileID)
+};
+
+function audioForward() {
+  audio.currentTime += 15.0;
+}
+
+function audioBackward() {
+  audio.currentTime -= 15.0;
+}
+
+var Airtable = require('airtable');
+var base = new Airtable({apiKey: 'YOUR_API_KEY'}).base('app6GHxtqv6bp7oBk');
+
+base('Tracks').select({
+    // Selecting the first 3 records in 🎧 All Music:
+    maxRecords: 3,
+    view: "🎧 All Music"
+}).eachPage(function page(records, fetchNextPage) {
+    // This function (`page`) will get called for each page of records.
+
+    records.forEach(function(record) {
+        console.log('Retrieved', record.get('Track Name'));
+    });
+
+    // To fetch the next page of records, call `fetchNextPage`.
+    // If there are more records, `page` will get called again.
+    // If there are no more records, `done` will get called.
+    fetchNextPage();
+
+}, function done(err) {
+    if (err) { console.error(err); return; }
+});
+
+</script>
+
+</body>
   
 </html>
