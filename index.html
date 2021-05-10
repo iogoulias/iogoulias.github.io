@@ -243,7 +243,7 @@ table {
   var source = document.createElement('source');
 
   function searchAirtable(searchTerm) {
-      fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9&filterByFormula="+encodeURIComponent('OR(SEARCH(LOWER("'+searchTerm+'"),LOWER({Track Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Artist))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER({File Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Album))>0)'))
+      fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyll8LpyyN3adHhR&filterByFormula="+encodeURIComponent('OR(SEARCH(LOWER("'+searchTerm+'"),LOWER({Track Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Artist))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER({File Name}))>0,SEARCH(LOWER("'+searchTerm+'"),LOWER(Album))>0)'))
       .then((res) => res.json())
       .then((data) => {
         //setRecipes(data.records);
@@ -305,7 +305,7 @@ audio.onended = (event) => {
   console.log('Video stopped either because 1) it was over, ' +
       'or 2) no further data is available.');
 
-    fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyjBiRLhAGxVa5J9")
+    fetch("https://api.airtable.com/v0/app6GHxtqv6bp7oBk/tracks?api_key=keyll8LpyyN3adHhR")
       .then((res) => res.json())
       .then((data) => {
         //setRecipes(data.records);
