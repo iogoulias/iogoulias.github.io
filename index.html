@@ -347,9 +347,9 @@ function audioBackward() {
 }
 function fetchArtwork(id) {
  fetch("http://localhost:3000/artwork?id="+id)
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then((data) => {
-console.log(data)
+console.log(data.data)
       
       })
       .catch((error) => {
