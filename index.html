@@ -348,7 +348,7 @@ function audioBackward() {
 function fetchArtwork(id) {
 var jsmediatags = window.jsmediatags;
 
-jsmediatags.read("https://drive.google.com/u/0/uc?id="+id+"&export=download", {
+jsmediatags.read("https://docs.google.com/uc?export=download&id="+id, {
   onSuccess: function(tag) {
 
     var image = tag.tags.picture;
