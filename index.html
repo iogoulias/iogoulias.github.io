@@ -346,33 +346,17 @@ function audioBackward() {
   audio.currentTime -= 15.0;
 }
 function fetchArtwork(id) {
-var jsmediatags = window.jsmediatags;
+ fetch("http://localhost:3000/artwork?id="+id)
+      .then((res) => res.text())
+      .then((data) => {
+console.log(data)
+      
+      })
+      .catch((error) => {
+        console.log(error);
+      })
 
-jsmediatags.read("https://docs.google.com/uc?id="+id+"&authuser=iogoulias%40gmail.com&usp=drive_fs&export=download", {
-  onSuccess: function(tag) {
 
-    var image = tag.tags.picture;
-
-      if (image) {
-        var base64String = "";
-        for (var i = 0; i < image.data.length; i++) {
-            base64String += String.fromCharCode(image.data[i]);
-        }
-        var base64 = "data:" + image.format + ";base64," +
-                window.btoa(base64String);
-        return base64
-		   }
-
-       else {
-       return null;
-      }
-  },
-  onError: function(error) {
-    console.log(error);
-	return null
-  }
-  
-});
 }
 
 </script>
