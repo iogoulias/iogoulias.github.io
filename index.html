@@ -346,7 +346,7 @@ function audioBackward() {
   audio.currentTime -= 15.0;
 }
 function fetchArtwork(id) {
-var jsmediatags = require("jsmediatags");
+var jsmediatags = window.jsmediatags;
 
 jsmediatags.read("https://drive.google.com/u/0/uc?id="+id+"&export=download", {
   onSuccess: function(tag) {
