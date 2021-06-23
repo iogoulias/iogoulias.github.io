@@ -10,7 +10,7 @@
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
   </script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js" integrity="sha512-YsR46MmyChktsyMMou+Bs74oCa/CDdwft7rJ5wlnmDzMj1mzqncsfJamEEf99Nk7IB0JpTMo5hS8rxB49FUktQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="/assets/css/print.css" media="print"> -->
 
@@ -283,7 +283,7 @@ table {
       var oldsource = document.getElementById('source').remove();
     } catch (e) {}
     
-
+    console.log(fetchArtwork(id))
     source.setAttribute('src', "https://docs.google.com/uc?export=download&id="+id);
     source.setAttribute('id', "source");
     audio.appendChild(source);
@@ -345,7 +345,35 @@ function audioForward() {
 function audioBackward() {
   audio.currentTime -= 15.0;
 }
+function fetchArtwork(id) {
+var jsmediatags = require("jsmediatags");
 
+jsmediatags.read("https://drive.google.com/u/0/uc?id="+id+"&export=download", {
+  onSuccess: function(tag) {
+
+    var image = tag.tags.picture;
+
+      if (image) {
+        var base64String = "";
+        for (var i = 0; i < image.data.length; i++) {
+            base64String += String.fromCharCode(image.data[i]);
+        }
+        var base64 = "data:" + image.format + ";base64," +
+                window.btoa(base64String);
+        return base64
+		   }
+
+       else {
+       return null;
+      }
+  },
+  onError: function(error) {
+    console.log(error);
+	return null
+  }
+  
+});
+}
 
 </script>
 
