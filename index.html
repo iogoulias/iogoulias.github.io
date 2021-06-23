@@ -205,7 +205,7 @@ table {
 <body>
      
     <div class="container">
-    
+   <img id="artwork" style="width:200px;" src=""/>
   <figure class="player">
     <figcaption></figcaption>
     <audio id="audio" controls><source src="https://docs.google.com/uc?export=download&amp;id=1kVzNfbHfhSjwRHbEckQjclfzHFqcuL7G" id="source"></audio>
@@ -350,7 +350,8 @@ function fetchArtwork(id) {
       .then((res) => res.json())
       .then((data) => {
 console.log(data.data)
-      
+document.getElementById("artwork").setAttribute('src', data.data);    
+document.getElementById("artwork").load();
       })
       .catch((error) => {
         console.log(error);
